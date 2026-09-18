@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   web:
     build: ./frontend
@@ -6,16 +5,12 @@ services:
       - api
     ports:
       - "3000:3000"
-    networks:
-      - network-backend
   api:
     build: ./backend
     depends_on:
       - mongo
     ports:
       - "3001:3001"
-    networks: 
-     - network-backend
   
   mongo:
     image: mongo
@@ -28,11 +23,6 @@ services:
     # uncomment following lines to access db locally
     # ports:
     #   - 27017:27017
-    networks: 
-     - network-backend
-
-networks:
-  network-backend:
 
 volumes: 
   mongodb_data:
