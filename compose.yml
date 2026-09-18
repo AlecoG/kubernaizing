@@ -4,13 +4,7 @@ services:
     depends_on:
       - api
     ports:
-<<<<<<< HEAD
       - "3000:3000"
-=======
-      - "3000:8080"
-    networks:
-      - network-backend
->>>>>>> 7108601 (Adding docker configs and compose.yaml)
   api:
     build: ./backend
     depends_on:
