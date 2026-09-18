@@ -13,7 +13,9 @@ import {
 } from "reactstrap";
 import TodoForm from "./todo-form";
 
-const API_URL = process.env.REACT_APP_API_URL;
+// A relative URL keeps the browser on the same origin in production; Nginx
+// proxies it to the API service. REACT_APP_API_URL remains useful for local UI development.
+const API_URL = process.env.REACT_APP_API_URL || "/api";
 
 const Home = () => {
   const [todos, setTodos] = useState([]);

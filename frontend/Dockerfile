@@ -1,16 +1,17 @@
-FROM node:14-alpine
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
-# add '/app/node_modules/.bin' to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-# install application dependencies
 COPY package*.json ./
-RUN npm install
-# RUN npm install react-scripts -g
+RUN npm ci
 
-# copy app files
 COPY . .
+ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN npm run build
 
-EXPOSE 3000
-CMD ["npm", "start"]
+FROM nginxinc/nginx-unprivileged:1.27-alpine
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 8080
