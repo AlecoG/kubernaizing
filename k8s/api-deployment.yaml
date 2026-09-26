@@ -24,10 +24,14 @@ spec:
       containers:
         - env:
             - name: MONGO_URI
-              value: mongodb://username:password@mongo:27017/todos?authSource=admin
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-credentials
+                  key: mongo-uri
           image: ghcr.io/alecog/todolist-back:v0.0.1
           imagePullPolicy: IfNotPresent
           name: api
+          resources:
           ports:
             - containerPort: 3001
               protocol: TCP

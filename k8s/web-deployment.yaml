@@ -25,6 +25,7 @@ spec:
         - image: ghcr.io/alecog/todolist-front:v0.0.1
           imagePullPolicy: IfNotPresent
           name: web
+          resources: {}
           ports:
             - containerPort: 8080
               protocol: TCP

@@ -29,8 +29,13 @@ Los manifests `k8s/web-deployment.yaml` y `k8s/api-deployment.yaml` usan inicial
 
 ```bash
 kubectl apply -f k8s/namespace.yaml
+cp k8s/mongo-credentials.example.yaml k8s/mongo-credentials.secret.yaml
+# Edita k8s/mongo-credentials.secret.yaml con las credenciales reales.
+kubectl apply -f k8s/mongo-credentials.secret.yaml
 kubectl apply -f k8s/web-deployment.yaml -f k8s/api-deployment.yaml
 ```
+
+El archivo de Secret local queda excluido de Git. Contiene `username`, `password` y `mongo-uri`: MongoDB recibe las dos primeras variables y la API recibe la URI completa mediante `MONGO_URI`. La URI incluye la contraseña, por lo que también debe ser un Secret; un ConfigMap no es apropiado. Si la contraseña contiene caracteres reservados en una URL, como `@`, `:`, `/`, `?`, `#` o `%`, usa su valor codificado para URL dentro de `mongo-uri`.
 
 Cada versión nueva tiene su propio tag de imagen. Por ejemplo, después de publicar `frontend-v0.0.2`, cambia solo la imagen del deployment web a `ghcr.io/alecog/todolist-front:v0.0.2` en `k8s/web-deployment.yaml` y ejecuta `kubectl apply -f k8s/web-deployment.yaml`. Haz lo mismo con `k8s/api-deployment.yaml` para una versión nueva del backend. Publicar un tag de Git construye la imagen, pero no cambia automáticamente la versión desplegada en Kubernetes.
 

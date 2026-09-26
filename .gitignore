@@ -2,6 +2,7 @@
 .idea/
 *.iml
 node_modules
+k8s/mongo-credentials.secret.yaml
 npm-debug.log
 *.sublime-project
 *.sublime-workspace

@@ -26,12 +26,19 @@ spec:
       containers:
         - env:
             - name: MONGO_INITDB_ROOT_PASSWORD
-              value: password
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-credentials
+                  key: password
             - name: MONGO_INITDB_ROOT_USERNAME
-              value: username
-          image: mongo
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-credentials
+                  key: username
+          image: mongo:8.0.16
           imagePullPolicy: IfNotPresent
           name: mongo
+          resources:
           volumeMounts:
             - mountPath: /data/db
               name: mongodb-data
