@@ -22,7 +22,7 @@ spec:
         io.kompose.service: web
     spec:
       containers:
-        - image: docker.io/library/kubernaizing-web:v1
+        - image: ghcr.io/alecog/todolist-front:v0.0.1
           imagePullPolicy: IfNotPresent
           name: web
           ports:

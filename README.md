@@ -22,3 +22,16 @@ git push origin frontend-v0.0.1
 ```
 
 Para el backend, usa `backend-v0.0.1` en ambos comandos. Cada workflow utiliza el Dockerfile de su directorio y el `GITHUB_TOKEN` para publicar en GHCR; no hace falta configurar una contraseña o token personal. El workflow rechaza tags con un formato distinto de `frontend-vX.Y.Z` o `backend-vX.Y.Z`.
+
+### Despliegue en Kubernetes
+
+Los manifests `k8s/web-deployment.yaml` y `k8s/api-deployment.yaml` usan inicialmente las imágenes `v0.0.1`. Primero publica los tags correspondientes y comprueba que ambos workflows hayan terminado correctamente. Después aplica los manifests:
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/web-deployment.yaml -f k8s/api-deployment.yaml
+```
+
+Cada versión nueva tiene su propio tag de imagen. Por ejemplo, después de publicar `frontend-v0.0.2`, cambia solo la imagen del deployment web a `ghcr.io/alecog/todolist-front:v0.0.2` en `k8s/web-deployment.yaml` y ejecuta `kubectl apply -f k8s/web-deployment.yaml`. Haz lo mismo con `k8s/api-deployment.yaml` para una versión nueva del backend. Publicar un tag de Git construye la imagen, pero no cambia automáticamente la versión desplegada en Kubernetes.
+
+Si el paquete de GHCR es privado, configura un `imagePullSecret` en el namespace `kubernaizing` y referéncialo en los deployments para que el clúster pueda descargar las imágenes. Los paquetes públicos de GHCR se pueden descargar sin autenticación.

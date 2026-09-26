@@ -25,7 +25,7 @@ spec:
         - env:
             - name: MONGO_URI
               value: mongodb://username:password@mongo:27017/todos?authSource=admin
-          image: docker.io/library/kubernaizing-api:latest
+          image: ghcr.io/alecog/todolist-back:v0.0.1
           imagePullPolicy: IfNotPresent
           name: api
           ports:
